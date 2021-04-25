@@ -25,9 +25,11 @@ components:
           user_id:
             type: string
             description: Id of sender
+            example: 3f60907e-bf66-40b0-8867-6b2028259234
           chat_id:
             type: string
             description: Id of chat to receive message
+            example: 180230fc-f624-45f9-8177-62bf974df5f7
       payload:
         type: object
         properties:
@@ -42,7 +44,6 @@ components:
             description: Url of an attachment to the message
         example:
           id: 78403b58-a5f3-11eb-bcbc-0242ac130002
-          sender_id: af432d60-f625-4899-a44d-5a39a7c1dc01
           content: Hello, how are u?
           attachment: null
     messages:
@@ -52,9 +53,11 @@ components:
           user_id:
             type: string
             description: Id of sender
+            example: 3f60907e-bf66-40b0-8867-6b2028259234
           chat_id:
             type: string
             description: Id of chat to receive message
+            example: 180230fc-f624-45f9-8177-62bf974df5f7
       payload:
         type: array
         items:
@@ -63,9 +66,10 @@ components:
             id:
               type: string
               description: Id of the message
-            sender_name:
-              type: string
-              description: Name of sender
+            self:
+              type: integer
+              format: int64
+              description: Whether message is authored by the user
             content:
               type: string
               description: Content of the message
@@ -75,10 +79,10 @@ components:
        
         example:
           - id: 78403b58-a5f3-11eb-bcbc-0242ac130002
-            sender_name: Arseny Neustroev
+            self: 1
             content: Hello, how are u?
             attachment: null
           - id: debe31fc-fe2e-4404-8ee9-1d9252553c96
-            sender_name: Ivan Ivanov
+            self: 0
             content: I'm fine, and u?
             attachment: https://lh3.googleusercontent.com/ogw/ADGmqu_SZ0vHnFjjUpdiaM--SmBZpuef50Nzg8JczhNOcw=s192-c-mo
