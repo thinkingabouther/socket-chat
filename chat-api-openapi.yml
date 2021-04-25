@@ -13,7 +13,18 @@ tags:
 - name: Friends list
   description: Endpoints to manipulate with friends list of current user
 paths:
-  /auth/google/login:
+  /auth/google:
+    get:
+      tags:
+      - Authorization (Google)
+      summary: Get info of currently logged user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
     post:
       tags:
       - Authorization (Google)
@@ -33,19 +44,6 @@ paths:
           description: Improper token
         "500":
           description: Internal server error
-  /auth/google/me:
-    get:
-      tags:
-      - Authorization (Google)
-      summary: Get info of currently logged user
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-  /auth/google/logout:
     delete:
       tags:
       - Authorization (Google)
@@ -85,13 +83,20 @@ paths:
           description: Unauthorized
         "404":
           description: User with current email not found
-  /user/delete-friend:
-    post:
+  /user/friend/{id}:
+    delete:
       tags:
       - Friends list
       summary: Delete friend for given user
-      requestBody:
-        $ref: '#/components/requestBodies/FriendRequest'
+      parameters:
+      - name: id
+        in: path
+        description: id of user to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
       responses:
         "204":
           description: Deleted
