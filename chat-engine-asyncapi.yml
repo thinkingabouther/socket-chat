@@ -1,0 +1,84 @@
+asyncapi: 2.0.0
+info:
+  title: Chat Socket Engine
+  version: 1.0.0
+  description: This service is in charge of processing messages
+channels:
+  /message/new:
+    publish:
+      message:
+        $ref: '#/components/messages/message'
+  message/edit:
+    publish:
+      message:
+        $ref: '#/components/messages/message'
+  message/all:
+    subscribe:
+      message:
+        $ref: '#/components/messages/messages'
+components:
+  messages:
+    message:
+      headers:
+        type: object
+        properties:
+          user_id:
+            type: string
+            description: Id of sender
+          chat_id:
+            type: string
+            description: Id of chat to receive message
+      payload:
+        type: object
+        properties:
+          id:
+            type: string
+            description: Id of the message
+          content:
+            type: string
+            description: Content of the message
+          attachment:
+            type: string
+            description: Url of an attachment to the message
+        example:
+          id: 78403b58-a5f3-11eb-bcbc-0242ac130002
+          sender_id: af432d60-f625-4899-a44d-5a39a7c1dc01
+          content: Hello, how are u?
+          attachment: null
+    messages:
+      headers:
+        type: object
+        properties:
+          user_id:
+            type: string
+            description: Id of sender
+          chat_id:
+            type: string
+            description: Id of chat to receive message
+      payload:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: string
+              description: Id of the message
+            sender_name:
+              type: string
+              description: Name of sender
+            content:
+              type: string
+              description: Content of the message
+            attachment:
+              type: string
+              description: Url of an attachment to the message
+       
+        example:
+          - id: 78403b58-a5f3-11eb-bcbc-0242ac130002
+            sender_name: Arseny Neustroev
+            content: Hello, how are u?
+            attachment: null
+          - id: debe31fc-fe2e-4404-8ee9-1d9252553c96
+            sender_name: Ivan Ivanov
+            content: I'm fine, and u?
+            attachment: https://lh3.googleusercontent.com/ogw/ADGmqu_SZ0vHnFjjUpdiaM--SmBZpuef50Nzg8JczhNOcw=s192-c-mo
