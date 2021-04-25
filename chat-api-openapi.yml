@@ -1,0 +1,166 @@
+openapi: 3.0.0
+info:
+  title: ChatAPI specs
+  description: |
+    API to use for chat application
+  version: 1.0.0
+servers:
+- url: https://virtserver.swaggerhub.com/thinkingabouther2/ChatAPI/1.0.0
+  description: SwaggerHub API Auto Mocking
+tags:
+- name: Authorization (Google)
+  description: Endpoints to use for authorization
+- name: Friends list
+  description: Endpoints to manipulate with friends list of current user
+paths:
+  /auth/google/login:
+    post:
+      tags:
+      - Authorization (Google)
+      summary: Authorize against the api with Google OAuth2 token
+      requestBody:
+        $ref: '#/components/requestBodies/Token'
+      responses:
+        "201":
+          description: Authorized. Session was stored in cookies
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        "400":
+          description: Improper request format. No token set
+        "401":
+          description: Improper token
+        "500":
+          description: Internal server error
+  /auth/google/me:
+    get:
+      tags:
+      - Authorization (Google)
+      summary: Get info of currently logged user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+  /auth/google/logout:
+    delete:
+      tags:
+      - Authorization (Google)
+      summary: Logout from the account
+      responses:
+        "200":
+          description: Logout successfully
+  /user/friends:
+    get:
+      tags:
+      - Friends list
+      summary: Get list of friends for current user
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendsList'
+        "401":
+          description: Unauthorized
+  /user/friend:
+    post:
+      tags:
+      - Friends list
+      summary: Add friend for current user
+      requestBody:
+        $ref: '#/components/requestBodies/FriendRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FriendsList'
+        "401":
+          description: Unauthorized
+        "404":
+          description: User with current email not found
+  /user/delete-friend:
+    post:
+      tags:
+      - Friends list
+      summary: Delete friend for given user
+      requestBody:
+        $ref: '#/components/requestBodies/FriendRequest'
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Unauthorized
+components:
+  schemas:
+    Token:
+      required:
+      - token
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJSUzI1NiIsImtpZCI6
+    FriendRequest:
+      required:
+      - email
+      type: object
+      properties:
+        email:
+          type: string
+          example: neustroev.arseny@gmail.com
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 54823b12-a5f3-11eb-bcbc-0242ac130002
+        name:
+          type: string
+          example: Arseny Neustroev
+        email:
+          type: string
+          example: neustroev.arseny@gmail.com
+        picture_url:
+          type: string
+          example: https://lh3.googleusercontent.com/ogw/ADGmqu_SZ0vHnFjjUpdiaM--SmBZpuef50Nzg8JczhNOcw=s192-c-mo
+    Friend:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Ivan Ivanov
+        email:
+          type: string
+          example: ii-van@email.com
+        picture_url:
+          type: string
+          example: https://lh3.googleusercontent.com/ogw/ADGmqu_SZ0vHnFjjUpdiaM--SmBZpuef50Nzg8JczhNOcw=s192-c-mo
+        chat_id:
+          type: string
+          example: 78403b58-a5f3-11eb-bcbc-0242ac130002
+    FriendsList:
+      type: array
+      items:
+        $ref: '#/components/schemas/Friend'
+  requestBodies:
+    Token:
+      description: Token from Google OAuth2
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Token'
+      required: true
+    FriendRequest:
+      description: User to add as a friend
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FriendRequest'
+      required: true
