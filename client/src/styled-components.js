@@ -123,6 +123,8 @@ export const HomeContainer = styled.div`
 export const FriendContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 50%;
+  font-size: 2em;
 `;
 
 export const FriendListContainer = styled.div`
@@ -182,3 +184,11 @@ export const FriendLink = styled.span`
   cursor: pointer;
   text-decoration: underline;
 `;
+
+export const ChatParentContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+`

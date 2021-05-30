@@ -9,7 +9,7 @@ import {
   InputGroupAddon,
   ListGroup,
   ListGroupItem,
-  ListGroupItemHeading,
+
 } from "shards-react";
 import {
   AddFriendErrorText,
@@ -63,6 +63,7 @@ const AddedFriendList = () => {
         <label htmlFor="email">Add your new friend</label>
         <InputGroup>
           <FormInput
+            size="lg"
             id="email"
             invalid={isError}
             placeholder={"example@inbox.com"}
@@ -79,7 +80,6 @@ const AddedFriendList = () => {
       </FormGroup>
       <FriendListContainer>
         <ListGroup>
-          <ListGroupItemHeading>Added friends:</ListGroupItemHeading>
           {(!data || data.message) && (
             <ListGroupItem>Your friends will appear here</ListGroupItem>
           )}

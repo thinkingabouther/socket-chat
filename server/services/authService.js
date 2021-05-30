@@ -14,6 +14,6 @@ exports.login = async (token) => {
   const returningUser = existingUser
     ? existingUser
     : await userRepository.save({ name, email, picture });
-  console.log(returningUser);
+  console.log(returningUser)
   return returningUser;
 };

@@ -28,3 +28,14 @@ exports.getFriends = async (req, res) => {
   res.status(200);
   res.json(result);
 };
+
+exports.getFriend = async (req, res) => {
+  const result = await userService.findFriend(req.user, req.params['chatId'])
+  if (result === null) {
+    res.status(404);
+    res.json()
+    return
+  }
+  res.status(200)
+  res.json(result)
+}

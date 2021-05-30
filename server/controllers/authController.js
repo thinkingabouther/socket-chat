@@ -2,7 +2,6 @@ const authService = require("../services/authService");
 
 exports.login = async (req, res) => {
   const { token } = req.body;
-  console.log(token);
   if (!token) {
     res.status(400);
     res.json({

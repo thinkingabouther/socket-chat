@@ -2,9 +2,9 @@ import { HeaderContainer } from "../../styled-components";
 
 const FriendHeader = () => (
   <HeaderContainer>
-    <h3>Friend list</h3>
+    <h3>Your friends list</h3>
     <h5>
-      Here you can add friends <br /> to call them later
+      Here you can add friends to chat with them later
     </h5>
   </HeaderContainer>
 );

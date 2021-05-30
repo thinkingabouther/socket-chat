@@ -8,4 +8,5 @@ module.exports = (app) => {
 
   app.route("/api/user/add-friend").post(userController.addFriend);
   app.route("/api/user/friends").get(userController.getFriends);
+  app.route("/api/user/friends/:chatId").get(userController.getFriend);
 };
