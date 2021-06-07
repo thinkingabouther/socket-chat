@@ -12,11 +12,13 @@ exports.addConnection = async (_id1, _id2, roomID) => {
     _from: _id1,
     _to: _id2,
     roomID: roomID,
+    chat: []
   };
   const connection2 = {
     _from: _id2,
     _to: _id1,
     roomID: roomID,
+    chat: []
   };
   await userConnectionsCollection.saveAll([connection1, connection2]);
 };
@@ -30,6 +32,26 @@ exports.findConnection = async (_id1, _id2) => {
   const result = await cursor.all();
   return result.length === 0 ? null : result[0];
 };
+
+exports.findConnectionByRoomId = async (roomId, userId) => {
+  const cursor = await dbConnection.query(aql`
+    FOR connection IN ${userConnectionsCollection}
+    FILTER connection.roomID == ${roomId} AND connection._from == ${userId}
+    LIMIT 1
+    RETURN connection`);
+  const result = await cursor.all();
+  return result.length === 0 ? null : result[0];
+}
+
+exports.appendToConnectionById = async (roomId, userId, message) => {
+  await dbConnection.query(aql`
+    FOR connection IN ${userConnectionsCollection}
+    FILTER connection._from == ${userId} AND connection.roomID == ${roomId}
+    UPDATE connection 
+    WITH {
+    chat : PUSH(connection.chat, ${message})
+    } IN userConnections`);
+}
 
 exports.findFriends = async (user) => {
   const cursor = await dbConnection.query(aql`

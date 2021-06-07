@@ -37,6 +37,7 @@ exports.findFriend = async (user, chatId) => {
     console.log(friend.edge.roomID)
     if (friend.edge.roomID === chatId) {
       user = {
+        _id: friend.user._id,
         name: friend.user.name,
         picture: friend.user.picture
       }

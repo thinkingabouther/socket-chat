@@ -9,7 +9,9 @@ exports.login = async (req, res) => {
     });
     return;
   }
+
   const user = await authService.login(token);
+
   if (user instanceof Error) {
     res.status(500);
     res.json({

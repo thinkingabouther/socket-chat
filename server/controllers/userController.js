@@ -8,6 +8,7 @@ exports.addFriend = async (req, res) => {
     });
     return;
   }
+
   try {
     await userService.addFriend(req.user, req.body.email);
   } catch (e) {
@@ -17,6 +18,7 @@ exports.addFriend = async (req, res) => {
     });
     return;
   }
+
   res.status(201);
   res.json({
     message: "Connection successfully created!",
