@@ -11,5 +11,5 @@ module.exports = (app) => {
   app.route("/api/user/friends").get(userController.getFriends);
   app.route("/api/user/friends/:chatId").get(userController.getFriend);
 
-  app.route("/api/chat/uuid").get(chatController.getUuid)
+  app.route("/api/chat/uuid").get(chatController.getUuid);
 };

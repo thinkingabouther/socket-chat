@@ -9,7 +9,6 @@ import {
   InputGroupAddon,
   ListGroup,
   ListGroupItem,
-
 } from "shards-react";
 import {
   AddFriendErrorText,

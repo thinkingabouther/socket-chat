@@ -32,16 +32,16 @@ exports.findFriends = async (user) => {
 
 exports.findFriend = async (user, chatId) => {
   const friends = await userConnectionRepository.findFriends(user);
-  user = {}
-  friends.forEach(friend => {
-    console.log(friend.edge.roomID)
+  user = {};
+  friends.forEach((friend) => {
+    console.log(friend.edge.roomID);
     if (friend.edge.roomID === chatId) {
       user = {
         _id: friend.user._id,
         name: friend.user.name,
-        picture: friend.user.picture
-      }
+        picture: friend.user.picture,
+      };
     }
-  })
-  return user
-}
+  });
+  return user;
+};
