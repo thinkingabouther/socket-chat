@@ -18,9 +18,9 @@ import {
 } from "../../styled-components";
 import { useHistory } from "react-router-dom";
 
-const friendsEndpoint = "api/user/friends";
 
-const AddedFriendList = () => {
+const AddedFriendList = (props) => {
+  const friendsEndpoint = `api/user/${props.user ? props.user._key : ''}/friends`;
   const history = useHistory();
   const [userEmail, setUserEmail] = useState();
   const [error, setError] = useState("");
