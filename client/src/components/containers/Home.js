@@ -10,7 +10,7 @@ const Home = (props) => (
       <>
         <Header user={context.user} />
         <HomeContainer>
-          <FriendList user={context.user}/>
+          <FriendList user={context.user} />
         </HomeContainer>
       </>
     )}
