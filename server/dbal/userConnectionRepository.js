@@ -66,8 +66,8 @@ exports.replaceInConnectionById = async (roomId, userId, message) => {
             message
     ) 
 
-  UPDATE connection WITH { chat: newChat } IN userConnections`)
-}
+  UPDATE connection WITH { chat: newChat } IN userConnections`);
+};
 
 exports.findFriends = async (user) => {
   const cursor = await dbConnection.query(aql`

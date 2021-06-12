@@ -29,11 +29,11 @@ module.exports = (server) => {
     socket.on("message/update", async (message) => {
       await chatService.updateMessage(message);
       const messages = await chatService.getMessages(
-          message.chatId,
-          message.senderId
+        message.chatId,
+        message.senderId
       );
       io.to(usersToSockets[message.receiverId]).emit("message/all", messages);
       socket.emit("message/all", messages);
-    })
+    });
   });
 };

@@ -16,8 +16,8 @@ import { io } from "socket.io-client";
 const Room = (props) => {
   const [friendName, setFriendName] = useState("");
   const [friendAvatarUrl, setFriendAvatarUrl] = useState("");
-  const [isEditing, setEditing] = useState(false)
-  const [messageToUpdateUuid, setMessageToUpdateUuid] = useState("")
+  const [isEditing, setEditing] = useState(false);
+  const [messageToUpdateUuid, setMessageToUpdateUuid] = useState("");
   const [friendId, setFriendId] = useState("");
   const socketRef = useRef();
   const [messages, setMessages] = useState([]);
@@ -65,18 +65,17 @@ const Room = (props) => {
       url: "",
       senderId: userId,
       receiverId: friendId,
-      chatId: chatId
-    }
-  }
+      chatId: chatId,
+    };
+  };
 
   const sendMessage = async (userId) => {
     if (!isEditing) {
       const message = await constructNewMessage(userId);
       socketRef.current.emit("message/new", message);
-    }
-    else {
-      setEditing(false)
-      const message = constructUpdateMessage(userId)
+    } else {
+      setEditing(false);
+      const message = constructUpdateMessage(userId);
       socketRef.current.emit("message/update", message);
     }
     setCurrentMessage("");
@@ -90,32 +89,44 @@ const Room = (props) => {
   };
 
   const updateMessage = (messageUuid) => {
-    setEditing(true)
-    setMessageToUpdateUuid(messageUuid)
+    setEditing(true);
+    setMessageToUpdateUuid(messageUuid);
     const messageToUpdate = messages.find((message) => {
-      if (message.uuid === messageUuid) return true
-    })
-    setCurrentMessage(messageToUpdate.body)
-  }
+      if (message.uuid === messageUuid) return true;
+    });
+    setCurrentMessage(messageToUpdate.body);
+  };
 
   const generateMessageJsx = (message, context) => {
-      return (
-          <div onClick={message.senderId === friendId ? null : () => updateMessage(message.uuid)}>
-            <Message
-                model={{
-                  direction: message.senderId === friendId ? 'incoming' : 'outgoing',
-                  message: message.body,
-                }}
-            >
-              <Message.Footer sentTime="19:05" />
-              <Avatar
-                  src={message.senderId === friendId ? context.user.picture : friendAvatarUrl}
-                  name={message.senderId === friendId ? context.user.name : friendName}
-              />
-            </Message>
-          </div>
-      )
-    }
+    return (
+      <div
+        onClick={
+          message.senderId === friendId
+            ? null
+            : () => updateMessage(message.uuid)
+        }
+      >
+        <Message
+          model={{
+            direction: message.senderId === friendId ? "incoming" : "outgoing",
+            message: message.body,
+          }}
+        >
+          <Message.Footer sentTime="19:05" />
+          <Avatar
+            src={
+              message.senderId === friendId
+                ? context.user.picture
+                : friendAvatarUrl
+            }
+            name={
+              message.senderId === friendId ? context.user.name : friendName
+            }
+          />
+        </Message>
+      </div>
+    );
+  };
 
   useEffect(async () => {
     await getFriendInfo();
@@ -139,7 +150,7 @@ const Room = (props) => {
               </ConversationHeader>
               <MessageList>
                 {messages.map((message) => {
-                  return generateMessageJsx(message, context)
+                  return generateMessageJsx(message, context);
                 })}
               </MessageList>
               <MessageInput
