@@ -24,6 +24,23 @@ exports.saveMessage = async (message) => {
   );
 };
 
+exports.updateMessage = async (message) => {
+  const connection = await userConnectionRepository.findConnectionByRoomId(
+      message.chatId,
+      message.senderId
+  );
+  const receiverId = connection._to;
+  await userConnectionRepository.replaceInConnectionById(
+      message.chatId,
+      message.senderId,
+      message
+  );
+  await userConnectionRepository.appendToConnectionById(
+      message.chatId,
+      receiverId,
+      message
+  );
+}
 exports.getMessages = async (chatId, userId) => {
   const result = await userConnectionRepository.findConnectionByRoomId(
     chatId,

@@ -6,7 +6,7 @@ exports.addFriend = async (user, friendEmail) => {
   const friend = await userRepository.findByEmail(friendEmail);
   if (!friend) throw new Error("User with given email not found");
 
-  const existingEdge = await userConnectionRepository.findConnection(
+  const existingEdge = await userConnectionRepository.findConnectionByUserIds(
     user._id,
     friend._id
   );

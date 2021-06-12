@@ -23,7 +23,7 @@ exports.addConnection = async (_id1, _id2, roomID) => {
   await userConnectionsCollection.saveAll([connection1, connection2]);
 };
 
-exports.findConnection = async (_id1, _id2) => {
+exports.findConnectionByUserIds = async (_id1, _id2) => {
   const cursor = await dbConnection.query(aql`
     FOR connection IN ${userConnectionsCollection}
     FILTER connection._from == ${_id1} AND connection._to == ${_id2}
@@ -52,6 +52,22 @@ exports.appendToConnectionById = async (roomId, userId, message) => {
     chat : PUSH(connection.chat, ${message})
     } IN userConnections`);
 };
+
+exports.replaceInConnectionById = async (roomId, userId, message) => {
+  await dbConnection.query(aql`
+  FOR connection IN userConnections
+    FILTER connection._from == ${userId} AND connection.roomID == ${roomId}
+    
+    LET newChat = (
+    FOR message IN connection.chat 
+      RETURN 
+        message.uuid == ${message.uuid} ?
+            MERGE(message, { body: ${message.body}}) :
+            message
+    ) 
+
+  UPDATE connection WITH { chat: newChat } IN userConnections`)
+}
 
 exports.findFriends = async (user) => {
   const cursor = await dbConnection.query(aql`
