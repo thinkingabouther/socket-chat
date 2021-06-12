@@ -85,16 +85,16 @@ const Room = (props) => {
       receiverId: friendId,
       chatId: chatId,
     };
-  }
+  };
 
   const sendMessage = async (userId) => {
     if (isImageLoaded) {
-      const message = await constructMessageWithImage(userId, imageUrl)
+      const message = await constructMessageWithImage(userId, imageUrl);
       socketRef.current.emit("message/new", message);
-      setImageUrl(null)
-      setImageLoaded(false)
-      setCurrentMessage("")
-      return
+      setImageUrl(null);
+      setImageLoaded(false);
+      setCurrentMessage("");
+      return;
     }
     if (!isEditing) {
       const message = await constructNewMessage(userId);
@@ -133,30 +133,30 @@ const Room = (props) => {
   const generateMessageJsx = (message, context) => {
     if (message.url !== "") {
       return (
-          <Message
-              type="image"
-              model={{
-                direction: message.senderId === friendId ? "incoming" : "outgoing",
-                payload: {
-                  src: message.url,
-                  alt: "message_image",
-                  width: "200px"
-                }
-              }}
-          >
-            <Message.Footer sentTime="19:05" />
-            <Avatar
-                src={
-                  message.senderId === friendId
-                      ? context.user.picture
-                      : friendAvatarUrl
-                }
-                name={
-                  message.senderId === friendId ? context.user.name : friendName
-                }
-            />
-          </Message>
-      )
+        <Message
+          type="image"
+          model={{
+            direction: message.senderId === friendId ? "incoming" : "outgoing",
+            payload: {
+              src: message.url,
+              alt: "message_image",
+              width: "200px",
+            },
+          }}
+        >
+          <Message.Footer sentTime="19:05" />
+          <Avatar
+            src={
+              message.senderId === friendId
+                ? context.user.picture
+                : friendAvatarUrl
+            }
+            name={
+              message.senderId === friendId ? context.user.name : friendName
+            }
+          />
+        </Message>
+      );
     }
 
     return (
@@ -213,53 +213,54 @@ const Room = (props) => {
       );
     } else {
       return (
-          <>
-            <AttachmentButton
-                onClick={uploadFile}
-                style={{
-                  fontSize: "1.2em",
-                  paddingLeft: "0.2em",
-                  paddingRight: "0.2em",
-                }}
-            />
-            <input id="file-input"
-                   accept="image/*"
-                   type="file"
-                   ref={file}
-                   onChange={fileUploaded}
-                   style={{display: 'none'}}
-            />
-            <SendButton
-                onClick={async () => {
-                  await sendMessage(context.user._id);
-                }}
-                style={{
-                  fontSize: "1.2em",
-                  marginLeft: 0,
-                  paddingLeft: "0.2em",
-                  paddingRight: "0.2em",
-                }}
-            />
-          </>
+        <>
+          <AttachmentButton
+            onClick={uploadFile}
+            style={{
+              fontSize: "1.2em",
+              paddingLeft: "0.2em",
+              paddingRight: "0.2em",
+            }}
+          />
+          <input
+            id="file-input"
+            accept="image/*"
+            type="file"
+            ref={file}
+            onChange={fileUploaded}
+            style={{ display: "none" }}
+          />
+          <SendButton
+            onClick={async () => {
+              await sendMessage(context.user._id);
+            }}
+            style={{
+              fontSize: "1.2em",
+              marginLeft: 0,
+              paddingLeft: "0.2em",
+              paddingRight: "0.2em",
+            }}
+          />
+        </>
       );
     }
   };
 
   const uploadFile = () => {
     file.current.click();
-  }
+  };
 
   const fileUploaded = (event) => {
     const fileUploaded = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = async function () {
-      const url = await sendMessageToServer(reader.result)
-      setImageUrl(url)
-      setImageLoaded(true)
-      setCurrentMessage("Изображение готово, отправьте сообщение для загрузки")
-    }
+      const url = await sendMessageToServer(reader.result);
+      setImageUrl(url);
+      setImageLoaded(true);
+      setCurrentMessage("Изображение готово, отправьте сообщение для загрузки");
+    };
     reader.readAsDataURL(fileUploaded);
-  }
+  };
 
   const sendMessageToServer = async (base64) => {
     const res = await fetch("/api/chat/image", {
@@ -273,13 +274,12 @@ const Room = (props) => {
     });
     if (res.status === 201) {
       const json = await res.json();
-      return json.url
-    }
-    else {
+      return json.url;
+    } else {
       const json = await res.json();
-      alert(json.error)
+      alert(json.error);
     }
-  }
+  };
 
   useEffect(async () => {
     await getFriendInfo();

@@ -11,13 +11,13 @@ exports.getUuid = async (req, res) => {
 exports.saveImage = async (req, res) => {
   const url = await chatService.saveImage(req.body.base64);
   if (!url) {
-    console.log(url)
-    res.status(500)
-    res.json('internal error')
-    return
+    console.log(url);
+    res.status(500);
+    res.json("internal error");
+    return;
   }
   res.status(201);
   res.json({
-    url: url
+    url: url,
   });
-}
+};

@@ -20,7 +20,7 @@ if (process.env.PROD) {
   console.log("production!");
 }
 
-app.use(bodyparser.json({limit: '50mb'}));
+app.use(bodyparser.json({ limit: "50mb" }));
 sessionMiddleware(app);
 loginMiddleware(app);
 checkLoginMiddleware(app);
