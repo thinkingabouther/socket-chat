@@ -146,14 +146,14 @@ const Room = (props) => {
         >
           <Message.Footer sentTime="19:05" />
           <Avatar
-              src={
-                message.senderId === friendId
-                    ? friendAvatarUrl
-                    : context.user.picture
-              }
-              name={
-                message.senderId === friendId ? friendName : context.user.name
-              }
+            src={
+              message.senderId === friendId
+                ? friendAvatarUrl
+                : context.user.picture
+            }
+            name={
+              message.senderId === friendId ? friendName : context.user.name
+            }
           />
         </Message>
       );
