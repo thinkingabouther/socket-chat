@@ -11,5 +11,6 @@ module.exports = (app) => {
   app.route("/api/user/:userId/friends").get(userController.getFriends);
   app.route("/api/user/friends/:chatId").get(userController.getFriend);
 
+  app.route("/api/chat/image").post(chatController.saveImage);
   app.route("/api/chat/uuid").get(chatController.getUuid);
 };
