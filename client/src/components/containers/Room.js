@@ -79,7 +79,7 @@ const Room = (props) => {
     } else {
       setEditing(false);
       const message = constructUpdateMessage(userId);
-      setMessageToUpdateUuid('')
+      setMessageToUpdateUuid("");
       socketRef.current.emit("message/update", message);
     }
     setCurrentMessage("");
@@ -102,10 +102,10 @@ const Room = (props) => {
   };
 
   const cancelEditing = async () => {
-    setEditing(false)
-    setCurrentMessage('')
-    setMessageToUpdateUuid('')
-  }
+    setEditing(false);
+    setCurrentMessage("");
+    setMessageToUpdateUuid("");
+  };
 
   const generateMessageJsx = (message, context) => {
     return (
@@ -141,43 +141,50 @@ const Room = (props) => {
   const generateChatControlJsx = (isEditing, context) => {
     if (isEditing) {
       return (
-          <>
-          <Button border
-              onClick={async () => {
-                await sendMessage(context.user._id);
-              }}
-          >Обновить</Button>
-            <Button border
-                onClick={async () => {
-                  await cancelEditing();
-                }}
-            >Отменить</Button>
-          </>
-      )
-    }
-    else {
+        <>
+          <Button
+            border
+            onClick={async () => {
+              await sendMessage(context.user._id);
+            }}
+          >
+            Обновить
+          </Button>
+          <Button
+            border
+            onClick={async () => {
+              await cancelEditing();
+            }}
+          >
+            Отменить
+          </Button>
+        </>
+      );
+    } else {
       return (
-          <>
-          <AttachmentButton style={{
-            fontSize: "1.2em",
-            paddingLeft: "0.2em",
-            paddingRight: "0.2em"
-          }} />
-          <SendButton
-              onClick={async () => {
-                await sendMessage(context.user._id);
-              }}
-              style={{
-                fontSize: "1.2em",
-                marginLeft: 0,
-                paddingLeft: "0.2em",
-                paddingRight: "0.2em"
-              }}
+        <>
+          <AttachmentButton
+            style={{
+              fontSize: "1.2em",
+              paddingLeft: "0.2em",
+              paddingRight: "0.2em",
+            }}
           />
-          </>
-    )
+          <SendButton
+            onClick={async () => {
+              await sendMessage(context.user._id);
+            }}
+            style={{
+              fontSize: "1.2em",
+              marginLeft: 0,
+              paddingLeft: "0.2em",
+              paddingRight: "0.2em",
+            }}
+          />
+        </>
+      );
     }
-  }
+  };
 
   useEffect(async () => {
     await getFriendInfo();
@@ -204,25 +211,28 @@ const Room = (props) => {
                   return generateMessageJsx(message, context);
                 })}
               </MessageList>
-              <div as={MessageInput} style={{
-                display: "flex",
-                flexDirection: "row",
-                borderTop: "1px dashed #d1dbe4"
-              }}>
+              <div
+                as={MessageInput}
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  borderTop: "1px dashed #d1dbe4",
+                }}
+              >
                 <MessageInput
-                    sendButton={false}
-                    attachButton={false}
-                    placeholder="Введите сообщение здесь"
-                    onSend={async () => {
-                      await sendMessage(context.user._id);
-                    }}
-                    value={currentMessage}
-                    onChange={setCurrentMessage}
-                    style={{
-                      flexGrow: 1,
-                      borderTop: 0,
-                      flexShrink: "initial"
-                    }}
+                  sendButton={false}
+                  attachButton={false}
+                  placeholder="Введите сообщение здесь"
+                  onSend={async () => {
+                    await sendMessage(context.user._id);
+                  }}
+                  value={currentMessage}
+                  onChange={setCurrentMessage}
+                  style={{
+                    flexGrow: 1,
+                    borderTop: 0,
+                    flexShrink: "initial",
+                  }}
                 />
                 {generateChatControlJsx(isEditing, context)}
               </div>
