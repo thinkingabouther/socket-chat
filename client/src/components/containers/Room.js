@@ -87,17 +87,17 @@ const Room = (props) => {
                 })}
               </MessageList>
               <ChatControlPanel
-                  as={MessageInput}
-                  context={context}
-                  setCurrentMessage={setCurrentMessage}
-                  currentMessage={currentMessage}
-                  socketRef={socketRef}
-                  isEditing={isEditing}
-                  setEditing={setEditing}
-                  messageToUpdateUuid={messageToUpdateUuid}
-                  setMessageToUpdateUuid={setMessageToUpdateUuid}
-                  friendId={friendId}
-                  chatId={chatId}
+                as={MessageInput}
+                context={context}
+                setCurrentMessage={setCurrentMessage}
+                currentMessage={currentMessage}
+                socketRef={socketRef}
+                isEditing={isEditing}
+                setEditing={setEditing}
+                messageToUpdateUuid={messageToUpdateUuid}
+                setMessageToUpdateUuid={setMessageToUpdateUuid}
+                friendId={friendId}
+                chatId={chatId}
               />
             </ChatContainer>
           </MainContainer>
