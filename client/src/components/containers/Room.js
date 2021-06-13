@@ -116,15 +116,6 @@ const Room = (props) => {
     };
   };
 
-  const updateMessage = (messageUuid) => {
-    setEditing(true);
-    setMessageToUpdateUuid(messageUuid);
-    const messageToUpdate = messages.find((message) => {
-      if (message.uuid === messageUuid) return true;
-    });
-    setCurrentMessage(messageToUpdate.body);
-  };
-
   const cancelEditing = async () => {
     setEditing(false);
     setCurrentMessage("");
@@ -246,14 +237,16 @@ const Room = (props) => {
               </ConversationHeader>
               <MessageList>
                 {messages.map((message) => {
-                  console.log(message);
                   return <MessageWrapper
                           message={message}
+                          messages={messages}
                           friendId={friendId}
                           friendAvatarUrl={friendAvatarUrl}
                           friendName={friendName}
                           context={context}
-                          updateMessage={updateMessage}
+                          setEditing={setEditing}
+                          setMessageToUpdateUuid={setMessageToUpdateUuid}
+                          setCurrentMessage={setCurrentMessage}
                   />
                 })}
               </MessageList>

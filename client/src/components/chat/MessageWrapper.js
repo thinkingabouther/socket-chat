@@ -2,9 +2,19 @@ import {Avatar, Message} from "@chatscope/chat-ui-kit-react";
 import React from "react";
 
 const MessageWrapper = props => {
+
+    const updateMessage = (messageUuid) => {
+        props.setEditing(true);
+        props.setMessageToUpdateUuid(messageUuid);
+        const messageToUpdate = props.messages.find((message) => {
+            if (message.uuid === messageUuid) return true;
+        });
+        props.setCurrentMessage(messageToUpdate.body);
+    };
+
     if (props.message.url !== "") {
         return (
-            <Message
+        <Message
                 type="image"
                 model={{
                     direction: props.message.senderId === props.friendId ? "incoming" : "outgoing",
@@ -27,15 +37,14 @@ const MessageWrapper = props => {
                     }
                 />
             </Message>
-        );
+        )
     }
-
     return (
         <div
             onClick={
                 props.message.senderId === props.friendId
                     ? null
-                    : () => props.updateMessage(props.message.uuid)
+                    : () => updateMessage(props.message.uuid)
             }
         >
             <Message
