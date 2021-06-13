@@ -8,10 +8,11 @@ import {
   ChatContainer,
   ConversationHeader,
   MainContainer,
-  Message,
   MessageInput,
   MessageList,
 } from "@chatscope/chat-ui-kit-react";
+
+import MessageWrapper from "../chat/MessageWrapper"
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { ChatParentContainer } from "../../styled-components";
 import { io } from "socket.io-client";
@@ -130,65 +131,6 @@ const Room = (props) => {
     setMessageToUpdateUuid("");
   };
 
-  const generateMessageJsx = (message, context) => {
-    if (message.url !== "") {
-      return (
-        <Message
-          type="image"
-          model={{
-            direction: message.senderId === friendId ? "incoming" : "outgoing",
-            payload: {
-              src: message.url,
-              alt: "message_image",
-              width: "200px",
-            },
-          }}
-        >
-          <Message.Footer sentTime="19:05" />
-          <Avatar
-            src={
-              message.senderId === friendId
-                ? friendAvatarUrl
-                : context.user.picture
-            }
-            name={
-              message.senderId === friendId ? friendName : context.user.name
-            }
-          />
-        </Message>
-      );
-    }
-
-    return (
-      <div
-        onClick={
-          message.senderId === friendId
-            ? null
-            : () => updateMessage(message.uuid)
-        }
-      >
-        <Message
-          model={{
-            direction: message.senderId === friendId ? "incoming" : "outgoing",
-            message: message.body,
-          }}
-        >
-          <Message.Footer sentTime="19:05" />
-          <Avatar
-            src={
-              message.senderId === friendId
-                ? friendAvatarUrl
-                : context.user.picture
-            }
-            name={
-              message.senderId === friendId ? friendName : context.user.name
-            }
-          />
-        </Message>
-      </div>
-    );
-  };
-
   const generateChatControlJsx = (isEditing, context) => {
     if (isEditing) {
       return (
@@ -304,7 +246,15 @@ const Room = (props) => {
               </ConversationHeader>
               <MessageList>
                 {messages.map((message) => {
-                  return generateMessageJsx(message, context);
+                  console.log(message);
+                  return <MessageWrapper
+                          message={message}
+                          friendId={friendId}
+                          friendAvatarUrl={friendAvatarUrl}
+                          friendName={friendName}
+                          context={context}
+                          updateMessage={updateMessage}
+                  />
                 })}
               </MessageList>
               <div
