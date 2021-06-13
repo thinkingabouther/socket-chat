@@ -1,5 +1,10 @@
 import React, { useState } from "react";
-import { Loader, Button, MessageInput, SendButton } from "@chatscope/chat-ui-kit-react";
+import {
+  Loader,
+  Button,
+  MessageInput,
+  SendButton,
+} from "@chatscope/chat-ui-kit-react";
 import FileUploader from "./FileUploader";
 import {
   constructMessageWithImage,
@@ -10,7 +15,7 @@ import {
 const ChatControlPanel = (props) => {
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
-  const [isImageLoading, setImageLoading] = useState(false)
+  const [isImageLoading, setImageLoading] = useState(false);
 
   const sendMessage = async (userId) => {
     if (isImageLoaded) {
@@ -55,8 +60,8 @@ const ChatControlPanel = (props) => {
   };
 
   const cancelSending = () => {
-    setImageLoaded(false)
-  }
+    setImageLoaded(false);
+  };
 
   return (
     <div
@@ -107,40 +112,44 @@ const ChatControlPanel = (props) => {
         </>
       ) : (
         <>
-            { isImageLoaded ?
-                <Button
-                    border
-                    onClick={() => {cancelSending()}}
-                >
-                  Отменить
-                </Button> :
-                <FileUploader
-                    setImageUrl={setImageUrl}
-                    setImageLoaded={setImageLoaded}
-                    setImageLoading={setImageLoading}
-                />
-            }
-            { isImageLoading ?
-                <Loader
-                    style={{
-                        fontSize: "1em",
-                        marginLeft: 0,
-                        marginTop: "0.5em"
-                    }}
-                /> :
-                <SendButton
-                    onClick={async () => {
-                        await sendMessage(props.context.user._id);
-                    }}
-                    disabled={!isImageLoaded && props.currentMessage === ""}
-                    style={{
-                        fontSize: "1.2em",
-                        marginLeft: 0,
-                        paddingLeft: "0.2em",
-                        paddingRight: "0.2em",
-                    }}
-                />
-            }
+          {isImageLoaded ? (
+            <Button
+              border
+              onClick={() => {
+                cancelSending();
+              }}
+            >
+              Отменить
+            </Button>
+          ) : (
+            <FileUploader
+              setImageUrl={setImageUrl}
+              setImageLoaded={setImageLoaded}
+              setImageLoading={setImageLoading}
+            />
+          )}
+          {isImageLoading ? (
+            <Loader
+              style={{
+                fontSize: "1em",
+                marginLeft: 0,
+                marginTop: "0.5em",
+              }}
+            />
+          ) : (
+            <SendButton
+              onClick={async () => {
+                await sendMessage(props.context.user._id);
+              }}
+              disabled={!isImageLoaded && props.currentMessage === ""}
+              style={{
+                fontSize: "1.2em",
+                marginLeft: 0,
+                paddingLeft: "0.2em",
+                paddingRight: "0.2em",
+              }}
+            />
+          )}
         </>
       )}
     </div>
