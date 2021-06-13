@@ -57,19 +57,20 @@ const Room = (props) => {
               />
               <MessageList>
                 {messages.map((message) => (
-                    <MessageWrapper
-                      key={message.uuid}
-                      as={Message}
-                      message={message}
-                      messages={messages}
-                      friendId={friendId}
-                      friendAvatarUrl={friendAvatarUrl}
-                      friendName={friendName}
-                      context={context}
-                      setEditing={setEditing}
-                      setMessageToUpdateUuid={setMessageToUpdateUuid}
-                      setCurrentMessage={setCurrentMessage}
-                    />))}
+                  <MessageWrapper
+                    key={message.uuid}
+                    as={Message}
+                    message={message}
+                    messages={messages}
+                    friendId={friendId}
+                    friendAvatarUrl={friendAvatarUrl}
+                    friendName={friendName}
+                    context={context}
+                    setEditing={setEditing}
+                    setMessageToUpdateUuid={setMessageToUpdateUuid}
+                    setCurrentMessage={setCurrentMessage}
+                  />
+                ))}
               </MessageList>
               <ChatControlPanel
                 as={MessageInput}
