@@ -1,5 +1,5 @@
 import { FriendContainer } from "../../styled-components";
-import AddedFriendList from "../interaction/AddedFriendList";
+import AddedFriendList from "./AddedFriendList";
 import FriendHeader from "../headers/FriendHeader";
 
 const FriendList = (props) => {

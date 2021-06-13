@@ -56,8 +56,7 @@ const Room = (props) => {
                 chatId={chatId}
               />
               <MessageList>
-                {messages.map((message) => {
-                  return (
+                {messages.map((message) => (
                     <MessageWrapper
                       key={message.uuid}
                       as={Message}
@@ -70,9 +69,7 @@ const Room = (props) => {
                       setEditing={setEditing}
                       setMessageToUpdateUuid={setMessageToUpdateUuid}
                       setCurrentMessage={setCurrentMessage}
-                    />
-                  );
-                })}
+                    />))}
               </MessageList>
               <ChatControlPanel
                 as={MessageInput}

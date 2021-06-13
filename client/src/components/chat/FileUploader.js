@@ -9,12 +9,14 @@ const FileUploader = (props) => {
   };
 
   const fileUploaded = (event) => {
+    props.setImageLoading(true);
     const fileUploaded = event.target.files[0];
     const reader = new FileReader();
     reader.onloadend = async function () {
       const url = await sendMessageToServer(reader.result);
       props.setImageUrl(url);
       props.setImageLoaded(true);
+      props.setImageLoading(false);
     };
     reader.readAsDataURL(fileUploaded);
   };
