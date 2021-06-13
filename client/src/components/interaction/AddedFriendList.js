@@ -86,12 +86,15 @@ const AddedFriendList = (props) => {
           {data &&
             data.length > 0 &&
             data.map((friend) => (
-                <FriendLink key={friend.roomID} onClick={() => goToRoom(friend.roomID)}>
-                  <ListGroupItem key={friend.roomID}>
-                    <FriendPicture src={friend.picture} />
-                    {friend.name}
-                  </ListGroupItem>
-                </FriendLink>
+              <FriendLink
+                key={friend.roomID}
+                onClick={() => goToRoom(friend.roomID)}
+              >
+                <ListGroupItem key={friend.roomID}>
+                  <FriendPicture src={friend.picture} />
+                  {friend.name}
+                </ListGroupItem>
+              </FriendLink>
             ))}
         </ListGroup>
       </FriendListContainer>
