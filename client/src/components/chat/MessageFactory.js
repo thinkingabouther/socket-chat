@@ -9,7 +9,7 @@ const getUuid = async () => {
   return body.uuid;
 };
 
-export async function constructNewMessage (
+export async function constructNewMessage(
   userId,
   currentMessage,
   friendId,
@@ -42,7 +42,7 @@ export function constructUpdateMessage(
   };
 }
 
-export async function constructMessageWithImage (userId, url, friendId, chatId) {
+export async function constructMessageWithImage(userId, url, friendId, chatId) {
   return {
     uuid: await getUuid(),
     body: "",
