@@ -9,12 +9,12 @@ const getUuid = async () => {
   return body.uuid;
 };
 
-exports.constructNewMessage = async (
+export async function constructNewMessage (
   userId,
   currentMessage,
   friendId,
   chatId
-) => {
+) {
   return {
     uuid: await getUuid(),
     body: currentMessage,
@@ -23,15 +23,15 @@ exports.constructNewMessage = async (
     receiverId: friendId,
     chatId: chatId,
   };
-};
+}
 
-exports.constructUpdateMessage = (
+export function constructUpdateMessage(
   userId,
   messageToUpdateUuid,
   currentMessage,
   friendId,
   chatId
-) => {
+) {
   return {
     uuid: messageToUpdateUuid,
     body: currentMessage,
@@ -40,9 +40,9 @@ exports.constructUpdateMessage = (
     receiverId: friendId,
     chatId: chatId,
   };
-};
+}
 
-exports.constructMessageWithImage = async (userId, url, friendId, chatId) => {
+export async function constructMessageWithImage (userId, url, friendId, chatId) {
   return {
     uuid: await getUuid(),
     body: "",
@@ -51,4 +51,4 @@ exports.constructMessageWithImage = async (userId, url, friendId, chatId) => {
     receiverId: friendId,
     chatId: chatId,
   };
-};
+}
