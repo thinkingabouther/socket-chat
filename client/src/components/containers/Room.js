@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AuthConsumer } from "../auth/AuthProvider";
 import {
-  Message,
-  Avatar,
-  ChatContainer,
   ConversationHeader,
+  Message,
+  ChatContainer,
   MainContainer,
   MessageInput,
   MessageList,
@@ -15,6 +14,7 @@ import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { ChatParentContainer } from "../../styled-components";
 import { io } from "socket.io-client";
 import ChatControlPanel from "../chat/ChatControlPanel";
+import ConversationHeaderWrapper from "../chat/ConversationHeaderWrapper";
 
 const Room = (props) => {
   const [friendName, setFriendName] = useState("");
@@ -27,30 +27,12 @@ const Room = (props) => {
   const [currentMessage, setCurrentMessage] = useState("");
   const chatId = window.location.href.split("/")[4];
 
-  const getFriendInfo = async () => {
-    const res = await fetch("/api/user/friends/" + chatId, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const body = await res.json();
-    setFriendName(body.name);
-    setFriendAvatarUrl(body.picture);
-    setFriendId(body._id);
-  };
-
-  const getJoiningData = () => {
-    return {
+  useEffect(async () => {
+    socketRef.current = io.connect("/");
+    socketRef.current.emit("user/join", {
       userId: props.user._id,
       chatId: chatId,
-    };
-  };
-
-  useEffect(async () => {
-    await getFriendInfo();
-    socketRef.current = io.connect("/");
-    socketRef.current.emit("user/join", getJoiningData());
+    });
 
     socketRef.current.on("message/all", (message) => {
       setMessages(message);
@@ -63,10 +45,16 @@ const Room = (props) => {
         <ChatParentContainer>
           <MainContainer responsive>
             <ChatContainer>
-              <ConversationHeader>
-                <Avatar src={friendAvatarUrl} name={friendName} />
-                <ConversationHeader.Content userName={friendName} />
-              </ConversationHeader>
+              <ConversationHeaderWrapper
+                  as={ConversationHeader}
+                  setFriendName={setFriendName}
+                  friendName={friendName}
+                  setFriendAvatarUrl={setFriendAvatarUrl}
+                  friendAvatarUrl={friendAvatarUrl}
+                  setFriendId={setFriendId}
+                  friendId={friendId}
+                  chatId={chatId}
+              />
               <MessageList>
                 {messages.map((message) => {
                   return (
