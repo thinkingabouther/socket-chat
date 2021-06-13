@@ -12,7 +12,7 @@ import {
   MessageList,
 } from "@chatscope/chat-ui-kit-react";
 
-import MessageWrapper from "../chat/MessageWrapper"
+import MessageWrapper from "../chat/MessageWrapper";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { ChatParentContainer } from "../../styled-components";
 import { io } from "socket.io-client";
@@ -237,17 +237,19 @@ const Room = (props) => {
               </ConversationHeader>
               <MessageList>
                 {messages.map((message) => {
-                  return <MessageWrapper
-                          message={message}
-                          messages={messages}
-                          friendId={friendId}
-                          friendAvatarUrl={friendAvatarUrl}
-                          friendName={friendName}
-                          context={context}
-                          setEditing={setEditing}
-                          setMessageToUpdateUuid={setMessageToUpdateUuid}
-                          setCurrentMessage={setCurrentMessage}
-                  />
+                  return (
+                    <MessageWrapper
+                      message={message}
+                      messages={messages}
+                      friendId={friendId}
+                      friendAvatarUrl={friendAvatarUrl}
+                      friendName={friendName}
+                      context={context}
+                      setEditing={setEditing}
+                      setMessageToUpdateUuid={setMessageToUpdateUuid}
+                      setCurrentMessage={setCurrentMessage}
+                    />
+                  );
                 })}
               </MessageList>
               <div

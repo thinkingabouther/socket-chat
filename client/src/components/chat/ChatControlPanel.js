@@ -1,8 +1,6 @@
-import {Avatar, Message} from "@chatscope/chat-ui-kit-react";
+import { Avatar, Message } from "@chatscope/chat-ui-kit-react";
 import React from "react";
 
-const MessageWrapper = props => {
+const MessageWrapper = (props) => {};
 
-}
-
-export default MessageWrapper
+export default MessageWrapper;
