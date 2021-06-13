@@ -13,6 +13,7 @@ const MessageWrapper = (props) => {
 
   if (props.message.url !== "") {
     return (
+    <a href={props.message.url} target="_blank">
       <Message
         type="image"
         model={{
@@ -39,6 +40,7 @@ const MessageWrapper = (props) => {
           }
         />
       </Message>
+    </a>
     );
   }
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import { AuthConsumer } from "../auth/AuthProvider";
-import FriendList from "../friendList/FriendList";
+import FriendListWrapper from "../friendList/FriendListWrapper";
 import Header from "../headers/Header";
 import { HomeContainer } from "../../styled-components";
 
@@ -10,7 +10,7 @@ const Home = () => (
       <>
         <Header user={context.user} />
         <HomeContainer>
-          <FriendList user={context.user} />
+          <FriendListWrapper user={context.user} />
         </HomeContainer>
       </>
     )}
