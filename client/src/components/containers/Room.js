@@ -46,14 +46,14 @@ const Room = (props) => {
           <MainContainer responsive>
             <ChatContainer>
               <ConversationHeaderWrapper
-                  as={ConversationHeader}
-                  setFriendName={setFriendName}
-                  friendName={friendName}
-                  setFriendAvatarUrl={setFriendAvatarUrl}
-                  friendAvatarUrl={friendAvatarUrl}
-                  setFriendId={setFriendId}
-                  friendId={friendId}
-                  chatId={chatId}
+                as={ConversationHeader}
+                setFriendName={setFriendName}
+                friendName={friendName}
+                setFriendAvatarUrl={setFriendAvatarUrl}
+                friendAvatarUrl={friendAvatarUrl}
+                setFriendId={setFriendId}
+                friendId={friendId}
+                chatId={chatId}
               />
               <MessageList>
                 {messages.map((message) => {
