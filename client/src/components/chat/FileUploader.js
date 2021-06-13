@@ -15,7 +15,6 @@ const FileUploader = (props) => {
       const url = await sendMessageToServer(reader.result);
       props.setImageUrl(url);
       props.setImageLoaded(true);
-      alert("Изображение готово, отправьте сообщение для загрузки");
     };
     reader.readAsDataURL(fileUploaded);
   };

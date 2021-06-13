@@ -14,10 +14,10 @@ const ChatControlPanel = (props) => {
   const sendMessage = async (userId) => {
     if (isImageLoaded) {
       const message = await constructMessageWithImage(
-        userId,
-        imageUrl,
-        props.friendId,
-        props.chatId
+          userId,
+          imageUrl,
+          props.friendId,
+          props.chatId
       );
       props.socketRef.current.emit("message/new", message);
       setImageUrl(null);
@@ -26,20 +26,20 @@ const ChatControlPanel = (props) => {
     }
     if (!props.isEditing) {
       const message = await constructNewMessage(
-        userId,
-        props.currentMessage,
-        props.friendId,
-        props.chatId
+          userId,
+          props.currentMessage,
+          props.friendId,
+          props.chatId
       );
       props.socketRef.current.emit("message/new", message);
     } else {
       props.setEditing(false);
       const message = constructUpdateMessage(
-        userId,
-        props.messageToUpdateUuid,
-        props.currentMessage,
-        props.friendId,
-        props.chatId
+          userId,
+          props.messageToUpdateUuid,
+          props.currentMessage,
+          props.friendId,
+          props.chatId
       );
       props.setMessageToUpdateUuid("");
       props.socketRef.current.emit("message/update", message);
@@ -54,69 +54,71 @@ const ChatControlPanel = (props) => {
   };
 
   return (
-    <div
-      as={MessageInput}
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        borderTop: "1px dashed #d1dbe4",
-      }}
-    >
+      <div
+          as={MessageInput}
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            borderTop: "1px dashed #d1dbe4",
+          }}
+      >
       <MessageInput
-        sendButton={false}
-        attachButton={false}
-        placeholder="Введите сообщение здесь"
-        onSend={async () => {
-          await sendMessage(props.context.user._id);
-        }}
-        value={props.currentMessage}
-        onChange={props.setCurrentMessage}
-        style={{
-          flexGrow: 1,
-          borderTop: 0,
-          flexShrink: "initial",
-        }}
+          sendButton={false}
+          attachButton={false}
+          placeholder="Введите сообщение здесь"
+          onSend={async () => {
+            await sendMessage(props.context.user._id);
+          }}
+          value={isImageLoaded ? "Изображение готово к отправке" : props.currentMessage}
+          onChange={isImageLoaded ? null : props.setCurrentMessage}
+          disabled={isImageLoaded}
+          style={{
+            flexGrow: 1,
+            borderTop: 0,
+            flexShrink: "initial",
+          }}
       />
-      {props.isEditing ? (
-        <>
-          <Button
-            border
-            onClick={async () => {
-              await sendMessage(props.context.user._id);
-            }}
-          >
-            Обновить
-          </Button>
-          <Button
-            border
-            onClick={async () => {
-              await cancelEditing();
-            }}
-          >
-            Отменить
-          </Button>
-        </>
-      ) : (
-        <>
-          <FileUploader
-            setImageUrl={setImageUrl}
-            setImageLoaded={setImageLoaded}
-          />
-          <SendButton
-            onClick={async () => {
-              await sendMessage(props.context.user._id);
-            }}
-            style={{
-              fontSize: "1.2em",
-              marginLeft: 0,
-              paddingLeft: "0.2em",
-              paddingRight: "0.2em",
-            }}
-          />
-        </>
-      )}
-    </div>
-  );
-};
 
+        {props.isEditing ? (
+            <>
+              <Button
+                  border
+                  onClick={async () => {
+                    await sendMessage(props.context.user._id);
+                  }}
+              >
+                Обновить
+              </Button>
+              <Button
+                  border
+                  onClick={async () => {
+                    await cancelEditing();
+                  }}
+              >
+                Отменить
+              </Button>
+            </>
+        ) : (
+            <>
+              <FileUploader
+                  setImageUrl={setImageUrl}
+                  setImageLoaded={setImageLoaded}
+              />
+              <SendButton
+                  onClick={async () => {
+                    await sendMessage(props.context.user._id);
+                  }}
+                  disabled={!isImageLoaded && props.currentMessage === ""}
+                  style={{
+                    fontSize: "1.2em",
+                    marginLeft: 0,
+                    paddingLeft: "0.2em",
+                    paddingRight: "0.2em",
+                  }}
+              />
+            </>
+        )}
+      </div>
+  );
+}
 export default ChatControlPanel;
