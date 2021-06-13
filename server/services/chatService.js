@@ -44,16 +44,17 @@ exports.updateMessage = async (message) => {
     message.chatId,
     message.senderId
   );
+  const dbMessage = createDbMessage(message)
   const receiverId = connection._to;
   await userConnectionRepository.replaceInConnectionById(
     message.chatId,
     message.senderId,
-    message
+    dbMessage
   );
-  await userConnectionRepository.appendToConnectionById(
+  await userConnectionRepository.replaceInConnectionById(
     message.chatId,
     receiverId,
-    message
+    dbMessage
   );
 };
 

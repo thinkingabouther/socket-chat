@@ -2,6 +2,7 @@ import { Avatar, Message } from "@chatscope/chat-ui-kit-react";
 import React from "react";
 
 const MessageWrapper = (props) => {
+
   const updateMessage = (messageUuid) => {
     props.setEditing(true);
     props.setMessageToUpdateUuid(messageUuid);

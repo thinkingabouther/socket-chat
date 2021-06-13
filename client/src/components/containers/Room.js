@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { AuthConsumer } from "../auth/AuthProvider";
 import {
-  SendButton,
-  AttachmentButton,
-  Button,
+  Message,
   Avatar,
   ChatContainer,
   ConversationHeader,
@@ -16,20 +14,18 @@ import MessageWrapper from "../chat/MessageWrapper";
 import styles from "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import { ChatParentContainer } from "../../styled-components";
 import { io } from "socket.io-client";
+import ChatControlPanel from "../chat/ChatControlPanel";
 
 const Room = (props) => {
   const [friendName, setFriendName] = useState("");
   const [friendAvatarUrl, setFriendAvatarUrl] = useState("");
   const [isEditing, setEditing] = useState(false);
   const [messageToUpdateUuid, setMessageToUpdateUuid] = useState("");
-  const [isImageLoaded, setImageLoaded] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
   const [friendId, setFriendId] = useState("");
   const socketRef = useRef();
   const [messages, setMessages] = useState([]);
   const [currentMessage, setCurrentMessage] = useState("");
   const chatId = window.location.href.split("/")[4];
-  const file = useRef(null);
 
   const getFriendInfo = async () => {
     const res = await fetch("/api/user/friends/" + chatId, {
@@ -44,174 +40,11 @@ const Room = (props) => {
     setFriendId(body._id);
   };
 
-  const getUuid = async () => {
-    const res = await fetch("/api/chat/uuid", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    const body = await res.json();
-    return body.uuid;
-  };
-
-  const constructNewMessage = async (userId) => {
-    return {
-      uuid: await getUuid(),
-      body: currentMessage,
-      url: "",
-      senderId: userId,
-      receiverId: friendId,
-      chatId: chatId,
-    };
-  };
-
-  const constructUpdateMessage = (userId) => {
-    return {
-      uuid: messageToUpdateUuid,
-      body: currentMessage,
-      url: "",
-      senderId: userId,
-      receiverId: friendId,
-      chatId: chatId,
-    };
-  };
-
-  const constructMessageWithImage = async (userId, url) => {
-    return {
-      uuid: await getUuid(),
-      body: "",
-      url: url,
-      senderId: userId,
-      receiverId: friendId,
-      chatId: chatId,
-    };
-  };
-
-  const sendMessage = async (userId) => {
-    if (isImageLoaded) {
-      const message = await constructMessageWithImage(userId, imageUrl);
-      socketRef.current.emit("message/new", message);
-      setImageUrl(null);
-      setImageLoaded(false);
-      setCurrentMessage("");
-      return;
-    }
-    if (!isEditing) {
-      const message = await constructNewMessage(userId);
-      socketRef.current.emit("message/new", message);
-    } else {
-      setEditing(false);
-      const message = constructUpdateMessage(userId);
-      setMessageToUpdateUuid("");
-      socketRef.current.emit("message/update", message);
-    }
-    setCurrentMessage("");
-  };
-
   const getJoiningData = () => {
     return {
       userId: props.user._id,
       chatId: chatId,
     };
-  };
-
-  const cancelEditing = async () => {
-    setEditing(false);
-    setCurrentMessage("");
-    setMessageToUpdateUuid("");
-  };
-
-  const generateChatControlJsx = (isEditing, context) => {
-    if (isEditing) {
-      return (
-        <>
-          <Button
-            border
-            onClick={async () => {
-              await sendMessage(context.user._id);
-            }}
-          >
-            Обновить
-          </Button>
-          <Button
-            border
-            onClick={async () => {
-              await cancelEditing();
-            }}
-          >
-            Отменить
-          </Button>
-        </>
-      );
-    } else {
-      return (
-        <>
-          <AttachmentButton
-            onClick={uploadFile}
-            style={{
-              fontSize: "1.2em",
-              paddingLeft: "0.2em",
-              paddingRight: "0.2em",
-            }}
-          />
-          <input
-            id="file-input"
-            accept="image/*"
-            type="file"
-            ref={file}
-            onChange={fileUploaded}
-            style={{ display: "none" }}
-          />
-          <SendButton
-            onClick={async () => {
-              await sendMessage(context.user._id);
-            }}
-            style={{
-              fontSize: "1.2em",
-              marginLeft: 0,
-              paddingLeft: "0.2em",
-              paddingRight: "0.2em",
-            }}
-          />
-        </>
-      );
-    }
-  };
-
-  const uploadFile = () => {
-    file.current.click();
-  };
-
-  const fileUploaded = (event) => {
-    const fileUploaded = event.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = async function () {
-      const url = await sendMessageToServer(reader.result);
-      setImageUrl(url);
-      setImageLoaded(true);
-      setCurrentMessage("Изображение готово, отправьте сообщение для загрузки");
-    };
-    reader.readAsDataURL(fileUploaded);
-  };
-
-  const sendMessageToServer = async (base64) => {
-    const res = await fetch("/api/chat/image", {
-      method: "POST",
-      body: JSON.stringify({
-        base64: base64,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (res.status === 201) {
-      const json = await res.json();
-      return json.url;
-    } else {
-      const json = await res.json();
-      alert(json.error);
-    }
   };
 
   useEffect(async () => {
@@ -221,7 +54,6 @@ const Room = (props) => {
 
     socketRef.current.on("message/all", (message) => {
       setMessages(message);
-      console.log(message);
     });
   }, []);
 
@@ -239,6 +71,8 @@ const Room = (props) => {
                 {messages.map((message) => {
                   return (
                     <MessageWrapper
+                      key={message.uuid}
+                      as={Message}
                       message={message}
                       messages={messages}
                       friendId={friendId}
@@ -252,31 +86,19 @@ const Room = (props) => {
                   );
                 })}
               </MessageList>
-              <div
-                as={MessageInput}
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  borderTop: "1px dashed #d1dbe4",
-                }}
-              >
-                <MessageInput
-                  sendButton={false}
-                  attachButton={false}
-                  placeholder="Введите сообщение здесь"
-                  onSend={async () => {
-                    await sendMessage(context.user._id);
-                  }}
-                  value={currentMessage}
-                  onChange={setCurrentMessage}
-                  style={{
-                    flexGrow: 1,
-                    borderTop: 0,
-                    flexShrink: "initial",
-                  }}
-                />
-                {generateChatControlJsx(isEditing, context)}
-              </div>
+              <ChatControlPanel
+                  as={MessageInput}
+                  context={context}
+                  setCurrentMessage={setCurrentMessage}
+                  currentMessage={currentMessage}
+                  socketRef={socketRef}
+                  isEditing={isEditing}
+                  setEditing={setEditing}
+                  messageToUpdateUuid={messageToUpdateUuid}
+                  setMessageToUpdateUuid={setMessageToUpdateUuid}
+                  friendId={friendId}
+                  chatId={chatId}
+              />
             </ChatContainer>
           </MainContainer>
         </ChatParentContainer>
