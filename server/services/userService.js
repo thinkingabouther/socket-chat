@@ -16,7 +16,7 @@ exports.addFriend = async (user, friendEmail) => {
   await userConnectionRepository.addConnection(user._id, friend._id, id);
 };
 
-exports.findFriends = async (user) => {
+exports.getFriends = async (user) => {
   const friends = await userConnectionRepository.findFriends(user);
   if (friends.length === 0) return null;
   const friendsWithRooms = [];
@@ -30,7 +30,7 @@ exports.findFriends = async (user) => {
   return friendsWithRooms;
 };
 
-exports.findFriend = async (user, chatId) => {
+exports.getFriend = async (user, chatId) => {
   const friends = await userConnectionRepository.findFriends(user);
   user = {};
   friends.forEach((friend) => {

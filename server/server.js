@@ -1,8 +1,8 @@
 const http = require("http");
-const app = require("./infrustructure/app.js");
+const httpApp = require("./infrustructure/app.js");
 const socketRoutes = require("./infrustructure/socketRoutes.js");
 
-const server = http.createServer(app);
+const server = http.createServer(httpApp);
 socketRoutes(server);
 
 const port = parseInt(process.env.PORT) || 8000;

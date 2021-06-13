@@ -5,7 +5,7 @@ const loginMiddleware = require("../middleware/loginMiddleware");
 const checkLoginMiddleware = require("../middleware/checkLoginMiddleware");
 
 const path = require("path");
-const routes = require("./routes");
+const httpRoutes = require("./httpRoutes");
 
 const app = express();
 
@@ -24,6 +24,6 @@ app.use(bodyparser.json({ limit: "50mb" }));
 sessionMiddleware(app);
 loginMiddleware(app);
 checkLoginMiddleware(app);
-routes(app);
+httpRoutes(app);
 
 module.exports = app;
